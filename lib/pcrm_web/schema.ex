@@ -27,7 +27,13 @@ defmodule PcrmWeb.Schema do
       arg(:id, non_null(:id))
 
       resolve(fn %{id: user_id}, _ ->
-        {:ok, @users[user_id]}
+        case @users[user_id] do
+          nil ->
+            {:error, "No user exists with that id"}
+
+          _ ->
+            {:ok, @users[user_id]}
+        end
       end)
     end
   end
